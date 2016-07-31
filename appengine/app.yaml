@@ -1,5 +1,5 @@
 application: pythoproflask
-version: 2
+version: 3
 runtime: python27
 api_version: 1
 threadsafe: yes
@@ -9,11 +9,10 @@ handlers:
   static_files: favicon.ico
   upload: favicon\.ico
 
-- url: /
+- url: .*
   script: main.app
 
-- url: /nome
-  script: nome.app
+
 
 libraries:
 - name: webapp2
