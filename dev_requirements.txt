@@ -1,0 +1,5 @@
+# Requirements with dev dependencies.
+
+mock==2.0
+
+-r requirements.txt
