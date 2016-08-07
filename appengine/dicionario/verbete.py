@@ -4,7 +4,7 @@ from __future__ import absolute_import, unicode_literals
 
 # Import the Flask Framework
 from dicionario.modelo import Verbete
-from flask import Flask, request, json, jsonify
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
@@ -15,8 +15,11 @@ app = Flask(__name__)
 
 @app.route('/verbete')
 def listar():
-    """Return a friendly HTTP greeting."""
-    return 'Listando Verbetes'
+    """Liste Verbetes"""
+    query = Verbete.query().order(-Verbete.palavra).order(Verbete.criacao)
+    verbetes = query.fetch()
+    verbetes_dcts = [verbete_dct(v) for v in verbetes]
+    return jsonify(verbetes_dcts)
 
 
 @app.route('/verbete/salvar')
@@ -24,13 +27,24 @@ def salvar():
     """Salva um verbete em BD"""
     palavra = request.args['palavra']
     descricao = request.args.get('descricao')
-
     verbete = Verbete(palavra=palavra, descricao=descricao)
     verbete.put()
-    return verbete_json(verbete)
+    return jsonify(verbete_dct(verbete))
 
 
-def verbete_json(verbete):
+@app.route('/verbete/editar/<int:id>')
+def editar(id):
+    """Salva um verbete em BD"""
+    palavra = request.args['palavra']
+    descricao = request.args.get('descricao')
+    verbete = Verbete.get_by_id(id)
+    verbete.palavra = palavra
+    verbete.descricao = descricao
+    verbete.put()
+    return jsonify(verbete_dct(verbete))
+
+
+def verbete_dct(verbete):
     dct = {
         'id': verbete.key.id(),
         'palavra': verbete.palavra,
@@ -39,4 +53,4 @@ def verbete_json(verbete):
         'update': verbete.update,
     }
 
-    return jsonify(dct  )
+    return dct
