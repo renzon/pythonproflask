@@ -9,8 +9,6 @@ handlers:
   static_files: favicon.ico
   upload: favicon\.ico
 
-- url: /verbete.*
-  script: dicionario.verbete.app
 
 - url: .*
   script: main.app

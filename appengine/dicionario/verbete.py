@@ -7,17 +7,17 @@ from __future__ import absolute_import, unicode_literals
 from google.appengine.ext import ndb
 
 from dicionario.modelo import Verbete
-from flask import Flask, request, jsonify
+from flask import Blueprint, request, jsonify
 from flask.json import jsonify
 
-app = Flask(__name__)
+verbete = Blueprint('verbete', __name__)
 
 
 # Note: We don't need to call run() since our application is embedded within
 # the App Engine WSGI application server.
 
 
-@app.route('/verbete')
+@verbete.route('/')
 def listar():
     """Liste Verbetes"""
     query = Verbete.query().order(-Verbete.palavra).order(Verbete.criacao)
@@ -26,7 +26,7 @@ def listar():
     return jsonify(verbetes_dcts)
 
 
-@app.route('/verbete/salvar')
+@verbete.route('/salvar')
 def salvar():
     """Salva um verbete em BD"""
     palavra = request.args['palavra']
@@ -36,7 +36,7 @@ def salvar():
     return jsonify(verbete_dct(verbete))
 
 
-@app.route('/verbete/editar/<int:id>')
+@verbete.route('/editar/<int:id>')
 def editar(id):
     """Salva um verbete em BD"""
     palavra = request.args['palavra']
@@ -48,7 +48,7 @@ def editar(id):
     return jsonify(verbete_dct(verbete))
 
 
-@app.route('/verbete/apagar/<int:id>')
+@verbete.route('/apagar/<int:id>')
 def apagar(id):
     """Salva um verbete em BD"""
     key = ndb.Key(Verbete, id)
@@ -66,3 +66,5 @@ def verbete_dct(verbete):
     }
 
     return dct
+
+print('Verbete importado')

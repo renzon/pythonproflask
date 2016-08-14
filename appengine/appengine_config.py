@@ -12,3 +12,12 @@ from google.appengine.ext import vendor
 # Third-party libraries are stored in "lib", vendoring will make
 # sure that they are importable by the application.
 vendor.add('lib')
+
+from main import app  # this code must be here because depends on flask inside lib
+
+print('App cfg')
+
+from dicionario.verbete import verbete
+
+app.register_blueprint(verbete, url_prefix='/verbete')
+print(app.url_map)
