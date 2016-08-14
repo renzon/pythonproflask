@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Listar Verbete</title>
+</head>
+<body>
+<h1>Listagem de Templates</h1>
+{% for v in verbetes %}
+  <dl>
+    <dt>Criaçao</dt>
+    <dd>{{ v.criacal }}</dd>
+    <dt>Update</dt>
+    <dd>{{ v.update }}</dd>
+    <dt>Palavra</dt>
+    <dd>{{ v.palavra }}</dd>
+    <dt>Descrição</dt>
+    <dd>{{ v.descricao }}</dd>
+  </dl>
+  {% else %}
+  Nenhum verbete encontrado
+{% endfor %}
+
+</body>
+</html>

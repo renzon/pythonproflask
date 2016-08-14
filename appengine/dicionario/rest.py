@@ -7,18 +7,16 @@ from __future__ import absolute_import, unicode_literals
 from google.appengine.ext import ndb
 
 from dicionario.modelo import Verbete
-from flask import Blueprint, request, jsonify
+from flask import request, jsonify
 from flask.json import jsonify
 
-verbete = Blueprint('verbete', __name__)
+import dicionario
+
+verbete = dicionario.verbete
 
 
-# Note: We don't need to call run() since our application is embedded within
-# the App Engine WSGI application server.
-
-
-@verbete.route('/')
-def listar():
+@verbete.route('/api')
+def listar_api():
     """Liste Verbetes"""
     query = Verbete.query().order(-Verbete.palavra).order(Verbete.criacao)
     verbetes = query.fetch()
@@ -26,8 +24,8 @@ def listar():
     return jsonify(verbetes_dcts)
 
 
-@verbete.route('/salvar')
-def salvar():
+@verbete.route('/api/salvar')
+def salvar_api():
     """Salva um verbete em BD"""
     palavra = request.args['palavra']
     descricao = request.args.get('descricao')
@@ -36,8 +34,8 @@ def salvar():
     return jsonify(verbete_dct(verbete))
 
 
-@verbete.route('/editar/<int:id>')
-def editar(id):
+@verbete.route('/api/editar/<int:id>')
+def editar_api(id):
     """Salva um verbete em BD"""
     palavra = request.args['palavra']
     descricao = request.args.get('descricao')
@@ -48,8 +46,8 @@ def editar(id):
     return jsonify(verbete_dct(verbete))
 
 
-@verbete.route('/apagar/<int:id>')
-def apagar(id):
+@verbete.route('/api/apagar/<int:id>')
+def apagar_api(id):
     """Salva um verbete em BD"""
     key = ndb.Key(Verbete, id)
     key.delete()
@@ -66,5 +64,3 @@ def verbete_dct(verbete):
     }
 
     return dct
-
-print('Verbete importado')

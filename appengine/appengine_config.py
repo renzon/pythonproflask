@@ -17,7 +17,7 @@ from main import app  # this code must be here because depends on flask inside l
 
 print('App cfg')
 
-from dicionario.verbete import verbete
+from dicionario import verbete
 
 app.register_blueprint(verbete, url_prefix='/verbete')
 print(app.url_map)
