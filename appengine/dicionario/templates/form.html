@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block header_title %}Formulário de Template{% endblock %}
+{% block title %}Formulário de Template{% endblock %}
+
+{% block body %}
+  <form>
+    Palavra: <input type="text" name="palavra" placeholder="Insira palavra"/>
+    <br/>
+    <br/>
+    Descricao: <textarea name="descricao" placeholder="Digite a descrição da palavra"></textarea>
+    <br/>
+    <br/>
+    <button type="submit">Salvar</button>
+
+
+  </form>
+{% endblock %}
+

@@ -17,14 +17,14 @@ def listar():
     return render_template('listar.html',verbetes=verbetes)
 
 
-@verbete.route('/salvar')
-def salvar():
+@verbete.route('/form')
+def form():
     """Salva um verbete em BD"""
-    palavra = request.args['palavra']
-    descricao = request.args.get('descricao')
-    verbete = Verbete(palavra=palavra, descricao=descricao)
-    verbete.put()
-    return jsonify(verbete_dct(verbete))
+    # palavra = request.args['palavra']
+    # descricao = request.args.get('descricao')
+    # verbete = Verbete(palavra=palavra, descricao=descricao)
+    # verbete.put()
+    return render_template('form.html')
 
 
 @verbete.route('/editar/<int:id>')
