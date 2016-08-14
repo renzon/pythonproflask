@@ -3,7 +3,7 @@ from __future__ import absolute_import, unicode_literals
 
 import dicionario
 from dicionario.modelo import Verbete
-from flask import render_template
+from flask import render_template, url_for, request, redirect
 
 verbete = dicionario.verbete
 
@@ -14,7 +14,7 @@ def listar():
     query = Verbete.query().order(-Verbete.palavra).order(Verbete.criacao)
     verbetes = query.fetch()
 
-    return render_template('listar.html',verbetes=verbetes)
+    return render_template('listar.html', verbetes=verbetes)
 
 
 @verbete.route('/form')
@@ -24,7 +24,21 @@ def form():
     # descricao = request.args.get('descricao')
     # verbete = Verbete(palavra=palavra, descricao=descricao)
     # verbete.put()
-    return render_template('form.html')
+    query = Verbete.query().order(-Verbete.palavra).order(Verbete.criacao)
+    verbetes = query.fetch()
+
+
+    return render_template('form.html', verbetes=verbetes)
+
+
+@verbete.route('/salvar', methods=['POST'])
+def save():
+    """Liste Verbetes"""
+    palavra=request.form.get('palavra')
+    descricao=request.form.get('descricao')
+    verbete = Verbete(palavra=palavra, descricao=descricao)
+    verbete.put()
+    return redirect(url_for('verbete.listar'))
 
 
 @verbete.route('/editar/<int:id>')

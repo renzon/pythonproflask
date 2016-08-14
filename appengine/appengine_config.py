@@ -19,5 +19,5 @@ print('App cfg')
 
 from dicionario import verbete
 
-app.register_blueprint(verbete, url_prefix='/verbete')
+app.register_blueprint(verbete, url_prefix='/verbetes')
 print(app.url_map)

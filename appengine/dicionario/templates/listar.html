@@ -3,18 +3,5 @@
 {% block title %}Listagem de Templates{% endblock %}
 
 {% block body %}
-  {% for v in verbetes %}
-    <dl>
-      <dt>Criaçao</dt>
-      <dd>{{ v.criacal }}</dd>
-      <dt>Update</dt>
-      <dd>{{ v.update }}</dd>
-      <dt>Palavra</dt>
-      <dd>{{ v.palavra }}</dd>
-      <dt>Descrição</dt>
-      <dd>{{ v.descricao }}</dd>
-    </dl>
-  {% else %}
-    Nenhum verbete encontrado
-  {% endfor %}
+  {% include 'listar_verbetes.html' %}
 {% endblock %}
