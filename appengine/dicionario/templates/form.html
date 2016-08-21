@@ -15,6 +15,10 @@
     <br/>
     Palavra: <input type="text" name="palavra" placeholder="Insira palavra" value="{{ verbete.palavra }}"/>
     <br/>
+  {{ mostrar_erro(erros.silabas) }}
+    <br/>
+    Silabas: <input type="text" name="silabas" placeholder="Insira o número de silabas" value="{{ verbete.silabas}}"/>
+    <br/>
 
 
     {{ mostrar_erro(erros.descricao) }}

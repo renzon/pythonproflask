@@ -29,11 +29,11 @@ def listar():
 @verbete.route('/editar/<int:id>', methods=['POST'])
 def editar(id):
     """Edita um verbete em BD"""
-    palavra = request.form.get('palavra')
-    descricao = request.form.get('descricao')
+    campos = {k: request.form.get(k) for k in CAMPOS_DE_VERBETE}
+    campos['silabas'] = int(campos['silabas'])
     verbete = Verbete.get_by_id(id)
-    verbete.populate(palavra=palavra, descricao=descricao)
-    erros = verificar_erros()
+    verbete.populate(**campos)
+    erros = verificar_erros(request.form)
     if erros:
         form_url = url_for('verbete.editar', id=id)
         return render_template('form.html', verbete=verbete, form_url=form_url, erros=erros)
@@ -41,10 +41,13 @@ def editar(id):
     return redirect(url_for('verbete.listar'))
 
 
-def verificar_erros():
+CAMPOS_DE_VERBETE = ('palavra', 'descricao', 'silabas')
+
+
+def verificar_erros(form):
     erros = {}
-    for campo in ('palavra', 'descricao'):
-        if not request.form.get(campo):
+    for campo in CAMPOS_DE_VERBETE:
+        if not form.get(campo):
             erros[campo] = '%s é um campo obrigatório' % campo
     return erros
 
@@ -61,10 +64,10 @@ def form(id):
 @verbete.route('/salvar', methods=['POST'])
 def save():
     """Liste Verbetes"""
-    palavra = request.form.get('palavra')
-    descricao = request.form.get('descricao')
-    verbete = Verbete(palavra=palavra, descricao=descricao)
-    erros = verificar_erros()
+    campos = {k: request.form.get(k) for k in CAMPOS_DE_VERBETE}
+    campos['silabas'] = int(campos['silabas'])
+    verbete = Verbete(**campos)
+    erros = verificar_erros(request.form)
     if erros:
         form_url = url_for('verbete.save')
         return render_template('form.html', verbete=verbete, form_url=form_url, erros=erros)

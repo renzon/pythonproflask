@@ -5,7 +5,8 @@ from google.appengine.ext import ndb
 
 
 class Verbete(ndb.Model):
-    criacao=ndb.DateTimeProperty(auto_now_add=True)
+    criacao = ndb.DateTimeProperty(auto_now_add=True)
     update = ndb.DateTimeProperty(auto_now=True)
     palavra = ndb.StringProperty(required=True)
     descricao = ndb.TextProperty(required=True)
+    silabas = ndb.IntegerProperty(default=0)
