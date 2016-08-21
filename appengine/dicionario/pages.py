@@ -12,7 +12,7 @@ verbete = dicionario.verbete
 
 @verbete.route('/')
 def listar():
-    """Liste Verbetes"""
+    """Lista de Verbetes"""
     query = Verbete.query().order(-Verbete.palavra).order(Verbete.criacao)
     verbetes = query.fetch()
     for v in verbetes:
@@ -33,8 +33,15 @@ def editar(id):
     descricao = request.form.get('descricao')
     verbete = Verbete.get_by_id(id)
     verbete.populate(palavra=palavra, descricao=descricao)
-    verbete.put()
-    return redirect(url_for('verbete.listar'))
+    if palavra and descricao:
+        verbete.put()
+        return redirect(url_for('verbete.listar'))
+    erros = {}
+    for campo in ('palavra', 'descricao'):
+        if not request.form.get(campo):
+            erros[campo] = '%s é um campo obrigatório' % campo
+    form_url = url_for('verbete.editar', id=id)
+    return render_template('form.html', verbete=verbete, form_url=form_url, erros=erros)
 
 
 @verbete.route('/form/<int:id>')

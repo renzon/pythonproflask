@@ -1,11 +1,22 @@
 {% extends 'base.html' %}
 {% block header_title %}Formulário de Verbete{% endblock %}
-{% block title %}Formulário de Novo Verbete{% endblock %}
+{% block title %}Formulário de {% if verbete %}Ediçao de{% else %}Novo{% endif %} Verbete{% endblock %}
+{% macro mostrar_erro(msg) %}
+  <span style="color:red">{{ msg }}</span>
+{% endmacro %}
 
 {% block body %}
+  {% if erros %}
+    Existem erros no formulário, corrija-os
+  {% endif %}
   <form action="{{ form_url }}" method="post" >
+    {{ mostrar_erro(erros.palavra) }}
+    <br/>
     Palavra: <input type="text" name="palavra" placeholder="Insira palavra" value="{{ verbete.palavra }}"/>
     <br/>
+
+
+    {{ mostrar_erro(erros.descricao) }}
     <br/>
     Descricao: <textarea name="descricao" placeholder="Digite a descrição da palavra" >{{ verbete.descricao }}</textarea>
     <br/>
