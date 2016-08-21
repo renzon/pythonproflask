@@ -33,15 +33,20 @@ def editar(id):
     descricao = request.form.get('descricao')
     verbete = Verbete.get_by_id(id)
     verbete.populate(palavra=palavra, descricao=descricao)
-    if palavra and descricao:
-        verbete.put()
-        return redirect(url_for('verbete.listar'))
+    erros = verificar_erros()
+    if erros:
+        form_url = url_for('verbete.editar', id=id)
+        return render_template('form.html', verbete=verbete, form_url=form_url, erros=erros)
+    verbete.put()
+    return redirect(url_for('verbete.listar'))
+
+
+def verificar_erros():
     erros = {}
     for campo in ('palavra', 'descricao'):
         if not request.form.get(campo):
             erros[campo] = '%s é um campo obrigatório' % campo
-    form_url = url_for('verbete.editar', id=id)
-    return render_template('form.html', verbete=verbete, form_url=form_url, erros=erros)
+    return erros
 
 
 @verbete.route('/form/<int:id>')
@@ -59,6 +64,10 @@ def save():
     palavra = request.form.get('palavra')
     descricao = request.form.get('descricao')
     verbete = Verbete(palavra=palavra, descricao=descricao)
+    erros = verificar_erros()
+    if erros:
+        form_url = url_for('verbete.save')
+        return render_template('form.html', verbete=verbete, form_url=form_url, erros=erros)
     verbete.put()
     return redirect(url_for('verbete.listar'))
 

@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block header_title %}Formulário de Verbete{% endblock %}
 {% block title %}Formulário de {% if verbete %}Ediçao de{% else %}Novo{% endif %} Verbete{% endblock %}
+{% set erros = erros or None %}
 {% macro mostrar_erro(msg) %}
   <span style="color:red">{{ msg }}</span>
 {% endmacro %}
