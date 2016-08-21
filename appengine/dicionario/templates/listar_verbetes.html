@@ -9,6 +9,9 @@
     <dt>Descrição</dt>
     <dd>{{ v.descricao }}</dd>
   </dl>
+  <form action="{{ v.delete_path }}" method="post">
+    <button type="submit">Apagar</button>
+  </form>
 {% else %}
   Nenhum verbete encontrado
 {% endfor %}
