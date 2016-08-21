@@ -1,3 +1,6 @@
+<a href="{{ novo_url }}">Criar Novo Verbete</a>
+<br />
+<br />
 {% for v in verbetes %}
   <dl>
     <dt>Criaçao</dt>
@@ -12,6 +15,7 @@
   <form action="{{ v.delete_path }}" method="post">
     <button type="submit">Apagar</button>
   </form>
+  <a href="{{ v.edit_path }}">Editar Verbete</a>
 {% else %}
   Nenhum verbete encontrado
 {% endfor %}

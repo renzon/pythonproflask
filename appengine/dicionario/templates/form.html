@@ -1,19 +1,18 @@
 {% extends 'base.html' %}
-{% block header_title %}Formulário de Template{% endblock %}
-{% block title %}Formulário de Template{% endblock %}
+{% block header_title %}Formulário de Verbete{% endblock %}
+{% block title %}Formulário de Novo Verbete{% endblock %}
 
 {% block body %}
-  <form action="{{ url_for('verbete.save') }}" method="post" >
-    Palavra: <input type="text" name="palavra" placeholder="Insira palavra"/>
+  <form action="{{ form_url }}" method="post" >
+    Palavra: <input type="text" name="palavra" placeholder="Insira palavra" value="{{ verbete.palavra }}"/>
     <br/>
     <br/>
-    Descricao: <textarea name="descricao" placeholder="Digite a descrição da palavra"></textarea>
+    Descricao: <textarea name="descricao" placeholder="Digite a descrição da palavra" >{{ verbete.descricao }}</textarea>
     <br/>
     <br/>
     <button type="submit">Salvar</button>
 
 
   </form>
-  {% include 'listar_verbetes.html' %}
 {% endblock %}
 
