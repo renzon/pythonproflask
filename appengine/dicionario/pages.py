@@ -4,7 +4,7 @@ from __future__ import absolute_import, unicode_literals
 from google.appengine.ext import ndb
 
 import dicionario
-from dicionario.modelo import Verbete
+from dicionario.modelo import Verbete, VerbeteForm
 from flask import render_template, url_for, request, redirect
 
 verbete = dicionario.verbete
@@ -29,27 +29,16 @@ def listar():
 @verbete.route('/editar/<int:id>', methods=['POST'])
 def editar(id):
     """Edita um verbete em BD"""
-    campos = {k: request.form.get(k) for k in CAMPOS_DE_VERBETE}
-    campos['silabas'] = int(campos['silabas'])
-    verbete = Verbete.get_by_id(id)
-    verbete.populate(**campos)
-    erros = verificar_erros(request.form)
+    form = VerbeteForm(**request.form)
+
+    erros = form.validate()
     if erros:
         form_url = url_for('verbete.editar', id=id)
-        return render_template('form.html', verbete=verbete, form_url=form_url, erros=erros)
+        return render_template('form.html', verbete=form, form_url=form_url, erros=erros)
+    verbete = Verbete.get_by_id(id)
+    form.fill_model(verbete)
     verbete.put()
     return redirect(url_for('verbete.listar'))
-
-
-CAMPOS_DE_VERBETE = ('palavra', 'descricao', 'silabas')
-
-
-def verificar_erros(form):
-    erros = {}
-    for campo in CAMPOS_DE_VERBETE:
-        if not form.get(campo):
-            erros[campo] = '%s é um campo obrigatório' % campo
-    return erros
 
 
 @verbete.route('/form/<int:id>')
@@ -64,14 +53,14 @@ def form(id):
 @verbete.route('/salvar', methods=['POST'])
 def save():
     """Liste Verbetes"""
-    campos = {k: request.form.get(k) for k in CAMPOS_DE_VERBETE}
-    campos['silabas'] = int(campos['silabas'])
-    verbete = Verbete(**campos)
-    erros = verificar_erros(request.form)
+    request.form.get('palavra')
+    form = VerbeteForm(**(request.form))
+
+    erros = form.validate()
     if erros:
         form_url = url_for('verbete.save')
-        return render_template('form.html', verbete=verbete, form_url=form_url, erros=erros)
-    verbete.put()
+        return render_template('form.html', verbete=form, form_url=form_url, erros=erros)
+    form.fill_model().put()
     return redirect(url_for('verbete.listar'))
 
 

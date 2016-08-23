@@ -3,9 +3,21 @@
 from __future__ import absolute_import, unicode_literals
 
 # Import the Flask Framework
-from flask import Flask
+from flask import Flask, request
+from flask.ext.babel import Babel
 
 app = Flask(__name__)
+babel = Babel(app)
+
+
+@babel.localeselector
+def get_locale():
+    return 'en'
+
+
+@babel.timezoneselector
+def get_timezone():
+    'UTC'
 
 
 # Note: We don't need to call run() since our application is embedded within
@@ -15,6 +27,7 @@ app = Flask(__name__)
 @app.route('/')
 def hello():
     """Return a friendly HTTP greeting."""
+    request.form.get('')
     return 'Hello World Flask!'
 
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-from flask import Blueprint
+from flask import Blueprint, request
 
 verbete = Blueprint('verbete', __name__,template_folder='templates')
 
