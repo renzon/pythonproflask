@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
+from flask import render_template, url_for, request, redirect
 from google.appengine.ext import ndb
 
 import dicionario
 from dicionario.modelo import Verbete, VerbeteForm
-from flask import render_template, url_for, request, redirect
 
 verbete = dicionario.verbete
 
@@ -54,7 +54,8 @@ def form(id):
 def save():
     """Liste Verbetes"""
     request.form.get('palavra')
-    form = VerbeteForm(**(request.form))
+    data = {k: request.form[k] for k in 'descricao silabas palavra'.split()}
+    form = VerbeteForm(**data)
 
     erros = form.validate()
     if erros:
